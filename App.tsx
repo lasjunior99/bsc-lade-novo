@@ -1,47 +1,30 @@
-
-import React, { useState } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import MainLayout from './components/MainLayout';
-import HomePage from './components/HomePage';
+
 import StrategyPage from './components/StrategyPage';
-import SettingsPage from './components/SettingsPage';
-import IndicatorsPage from './components/IndicatorsPage';
 import ProjectsPage from './components/ProjectsPage';
+import IndicatorsPage from './components/IndicatorsPage';
 import ReportsPage from './components/ReportsPage';
-import DevelopmentPage from './components/DevelopmentPage';
+import SettingsPage from './components/SettingsPage';
 
-/**
- * App Component
- * 
- * Gerencia a navegação entre as páginas do sistema.
- * Itens não implementados redirecionam para a DevelopmentPage.
- */
-const App: React.FC = () => {
-  const [currentPage, setCurrentPage] = useState('home');
-
-  const renderContent = () => {
-    switch (currentPage) {
-      case 'home':
-        return <HomePage />;
-      case 'strategy':
-        return <StrategyPage />;
-      case 'settings':
-        return <SettingsPage />;
-      case 'indicators':
-        return <IndicatorsPage />;
-      case 'projects':
-        return <ProjectsPage />;
-      case 'reports':
-        return <ReportsPage />;
-      default:
-        return <DevelopmentPage pageKey={currentPage} />;
-    }
-  };
-
+function App() {
   return (
-    <MainLayout currentPage={currentPage} onNavigate={setCurrentPage}>
-      {renderContent()}
-    </MainLayout>
+    <BrowserRouter>
+      <Routes>
+
+        {/* Layout principal com Sidebar */}
+        <Route element={<MainLayout />}>
+          <Route path="/" element={<StrategyPage />} />
+          <Route path="/strategy" element={<StrategyPage />} />
+          <Route path="/projects" element={<ProjectsPage />} />
+          <Route path="/indicators" element={<IndicatorsPage />} />
+          <Route path="/reports" element={<ReportsPage />} />
+          <Route path="/settings" element={<SettingsPage />} />
+        </Route>
+
+      </Routes>
+    </BrowserRouter>
   );
-};
+}
 
 export default App;

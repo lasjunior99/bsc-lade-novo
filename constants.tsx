@@ -2,13 +2,38 @@
 import React from 'react';
 
 export const MENU_ITEMS = [
-  { label: 'Início', icon: '🏠', key: 'home' },
-  { label: 'Estratégia', icon: '🎯', key: 'strategy' },
-  { label: 'Indicadores', icon: '📊', key: 'indicators' },
-  { label: 'Projetos', icon: '📋', key: 'projects' },
-  { label: 'Relatórios', icon: '📈', key: 'reports' },
-  { label: 'Configurações', icon: '⚙️', key: 'settings' },
+  {
+    key: 'strategy',
+    label: 'Estratégia',
+    route: '/strategy',
+    icon: '🧭'
+  },
+  {
+    key: 'projects',
+    label: 'Projetos',
+    route: '/projects',
+    icon: '🚀'
+  },
+  {
+    key: 'indicators',
+    label: 'Indicadores',
+    route: '/indicators',
+    icon: '📊'
+  },
+  {
+    key: 'reports',
+    label: 'Relatórios',
+    route: '/reports',
+    icon: '📈'
+  },
+  {
+    key: 'settings',
+    label: 'Configurações',
+    route: '/settings',
+    icon: '⚙️'
+  }
 ];
+
 
 export const COLORS = {
   primary: '#1e3a8a', // Azul Escuro
