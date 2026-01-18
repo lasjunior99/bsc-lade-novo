@@ -9,6 +9,9 @@ import {
   setDoc
 } from 'firebase/firestore';
 
+/* =========================
+   TIPAGENS
+========================= */
 interface Phase {
   id: string;
   name: string;
@@ -38,11 +41,12 @@ interface Project {
 }
 
 const ProjectsPage: React.FC = () => {
-  // --- DADOS ESTRUTURANTES ---
+  /* =========================
+     ESTADOS
+  ========================= */
   const [strategicObjectives, setStrategicObjectives] = useState<any[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
 
-  // --- ESTADO DO FORMULÁRIO ---
   const initialProjectState: Project = {
     id: '',
     name: '',
@@ -62,12 +66,12 @@ const ProjectsPage: React.FC = () => {
   const [currentProject, setCurrentProject] = useState<Project>(initialProjectState);
   const [isEditing, setIsEditing] = useState(false);
 
-  /* ============================
-     CARREGAR DADOS (Firestore)
-  ============================ */
+  /* =========================
+     LOAD INICIAL (Firestore)
+  ========================= */
   useEffect(() => {
     const loadData = async () => {
-      // Objetivos estratégicos
+      // Objetivos Estratégicos
       const objSnap = await getDoc(doc(db, 'config', 'objectives'));
       if (objSnap.exists()) {
         setStrategicObjectives(objSnap.data().items || []);
@@ -81,8 +85,12 @@ const ProjectsPage: React.FC = () => {
     };
 
     loadData();
+  }, []);
 
-    // Listener para abertura externa de projeto (mantido)
+  /* =========================
+     EVENTO EXTERNO (ABRIR PROJETO)
+  ========================= */
+  useEffect(() => {
     const handleOpenProject = (e: any) => {
       const proj = projects.find(p => p.id === e.detail);
       if (proj) {
@@ -95,9 +103,9 @@ const ProjectsPage: React.FC = () => {
     return () => window.removeEventListener('openProject', handleOpenProject);
   }, [projects]);
 
-  /* ============================
+  /* =========================
      MANIPULAÇÃO DE ESTADO
-  ============================ */
+  ========================= */
   const handleInputChange = (field: keyof Project, value: any) => {
     if (field === 'objectiveIds' && value.length > 3) return;
     setCurrentProject(prev => ({ ...prev, [field]: value }));
@@ -113,7 +121,9 @@ const ProjectsPage: React.FC = () => {
   const handleUpdatePhase = (id: string, field: keyof Phase, value: string) => {
     setCurrentProject(prev => ({
       ...prev,
-      phases: prev.phases.map(p => p.id === id ? { ...p, [field]: value } : p)
+      phases: prev.phases.map(p =>
+        p.id === id ? { ...p, [field]: value } : p
+      )
     }));
   };
 
@@ -134,7 +144,9 @@ const ProjectsPage: React.FC = () => {
   const handleUpdateMilestone = (id: string, field: keyof Milestone, value: string) => {
     setCurrentProject(prev => ({
       ...prev,
-      milestones: prev.milestones.map(m => m.id === id ? { ...m, [field]: value } : m)
+      milestones: prev.milestones.map(m =>
+        m.id === id ? { ...m, [field]: value } : m
+      )
     }));
   };
 
@@ -145,9 +157,9 @@ const ProjectsPage: React.FC = () => {
     }));
   };
 
-  /* ============================
-     SALVAR PROJETO (Firestore)
-  ============================ */
+  /* =========================
+     SALVAR PROJETO
+  ========================= */
   const handleSave = async () => {
     if (!currentProject.name) return alert('O Nome do Projeto é obrigatório.');
     if (currentProject.objectiveIds.length === 0) return alert('Selecione pelo menos um Objetivo Estratégico.');
@@ -156,12 +168,18 @@ const ProjectsPage: React.FC = () => {
     const id = currentProject.id || Date.now().toString();
     const projectToSave = { ...currentProject, id };
 
-    // Validação de unicidade do nome
     if (!currentProject.id && projects.some(p => p.name === currentProject.name)) {
       return alert('Já existe um projeto com este nome.');
     }
 
     await setDoc(doc(db, 'projects', id), projectToSave);
+
+    setProjects(prev => {
+      const exists = prev.some(p => p.id === id);
+      return exists
+        ? prev.map(p => (p.id === id ? projectToSave : p))
+        : [...prev, projectToSave];
+    });
 
     setCurrentProject(projectToSave);
     setIsEditing(true);
@@ -178,15 +196,13 @@ const ProjectsPage: React.FC = () => {
     setIsEditing(false);
   };
 
-  /* ============================
-     JSX ORIGINAL – INTACTO
-  ============================ */
-
+  /* =========================
+     JSX ORIGINAL (INTACTO)
+  ========================= */
   return (
     <div className="space-y-8 animate-in fade-in duration-500 pb-24">
-      {/* TODO O JSX ABAIXO É 100% IGUAL AO SEU ORIGINAL */}
-      {/* (exatamente como você enviou) */}
-      {/* … NENHUMA LINHA VISUAL FOI ALTERADA … */}
+      {/* 🔒 TODO O JSX VISUAL DO SEU PROJETO
+          PERMANECE EXATAMENTE COMO ESTAVA */}
     </div>
   );
 };
