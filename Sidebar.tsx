@@ -46,7 +46,7 @@ const Sidebar: React.FC<SidebarProps> = ({ currentPage, onNavigate }) => {
       {/* Logo Section */}
       <div className="p-6 border-b bg-white/50" style={{ borderColor: COLORS.border }}>
         <h1 className="text-xl font-bold tracking-tight flex items-center gap-2" style={{ color: COLORS.primary }}>
-          <div className="w-8 h-8 rounded bg-blue-900 flex items-center justify-center text-white text-xs font-black">L</div>
+          <div className="w-8 h-8 rounded bg-blue-900 flex items-center justify-center text-white text-xs font-black">LA</div>
           BSC-LADE
         </h1>
         <p className="text-[10px] uppercase tracking-widest mt-1 opacity-60">Plataforma Estratégica</p>
